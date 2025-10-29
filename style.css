@@ -81,65 +81,6 @@ textarea {
     pointer-events: none;
 }
 
-/* --- ESTILO CORRIGIDO DO CARROSSEL (SEÇÃO PROJETOS) --- */
-
-.projects-swiper {
-    width: 100%;
-    padding: 2rem 0;
-    overflow: hidden;
-    /* evita corte de slides */
-}
-
-/* cada slide ocupa um espaço uniforme controlado pelo Swiper */
-.swiper-slide {
-    display: flex !important;
-    justify-content: center;
-    align-items: stretch;
-    height: auto;
-}
-
-/* largura e aparência dos cards */
-.project-card {
-    width: 100%;
-    max-width: 360px;
-    height: 100%;
-    flex-shrink: 0;
-}
-
-/* botões laterais */
-.swiper-button-prev,
-.swiper-button-next {
-    color: white;
-    background-color: var(--primary);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-}
-
-.swiper-button-prev:hover,
-.swiper-button-next:hover {
-    transform: translateY(-50%) scale(1.1);
-}
-
-/* esconder em telas pequenas */
-@media (max-width: 768px) {
-
-    .swiper-button-prev,
-    .swiper-button-next {
-        display: none;
-    }
-}
-
-
-
 .bg-deep-dark {
     background-color: var(--deep-dark);
 }

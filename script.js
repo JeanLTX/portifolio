@@ -254,30 +254,3 @@ $(document).ready(function () {
         color: 'rgb(0, 0, 0, 1)'
     });
 });
-
-document.addEventListener('DOMContentLoaded', () => {
-    const swiper = new Swiper(".projects-swiper", {
-        loop: true,
-        centeredSlides: false,
-        spaceBetween: 32,
-        slidesPerView: 3, // padrão para desktop
-        navigation: {
-            nextEl: "#next-projects",
-            prevEl: "#prev-projects",
-        },
-        breakpoints: {
-            0: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-        },
-        on: {
-            resize: function () {
-                this.update();
-            },
-        },
-    });
-
-    // força o recálculo do layout após a renderização
-    setTimeout(() => swiper.update(), 300);
-});
-
