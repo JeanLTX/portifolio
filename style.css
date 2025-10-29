@@ -1,0 +1,738 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #6c5ce7;
+    --primary-dark: #5d4aec;
+    --dark: #1e1e1e;
+    --light: #f8f9fa;
+    --deep-dark: #0C0B19;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--dark);
+    color: var(--light);
+    overflow-x: hidden;
+    cursor: none;
+}
+
+a,
+button {
+    cursor: none;
+}
+
+input,
+textarea {
+    cursor: none;
+}
+
+.about-bg-image {
+    /* 1. O Overlay Escuro e a Imagem de Fundo em uma só linha */
+    /* Usamos 'linear-gradient' para criar a camada escura (o seu #0d0e20 com 85% de opacidade) */
+    background-image:
+        linear-gradient(rgba(13, 14, 32, 0.274), rgba(13, 14, 32, 0.85)),
+        url('./assets/aboutbg3.jpeg');
+    /* <-- ATENÇÃO: Verifique o caminho real da sua imagem */
+
+    /* 2. Propriedades de Ajuste */
+    background-size: cover;
+    /* Garante que a imagem cubra toda a seção */
+    background-position: center;
+    /* Centraliza a imagem */
+    background-repeat: no-repeat;
+    /* Evita repetição */
+
+    /* Efeito Paralaxe (opcional, mas legal!) */
+}
+
+/* --- Estilo para Adicionar Glows Roxos Sutis (Section Skills) --- */
+.glow-background {
+    /* CHAVE: Permite posicionar o 'glow' (::before) */
+    position: relative;
+    /* Garante que o conteúdo não seja coberto pelo glow (deve ser maior que z-index 0) */
+    z-index: 1;
+    /* Garante que o glow não vaze da seção */
+    overflow: hidden;
+    /* Cor de fundo para que o glow seja visto (usando o seu novo tom escuro) */
+    background-color: var(--deep-dark);
+}
+
+.glow-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    /* Fica atrás do conteúdo */
+
+    /* Cria o efeito de luz roxa borrada */
+    /* Usando var(--primary) para a cor roxa (6c5ce7) com baixa opacidade */
+    background:
+        radial-gradient(circle at 10% 15%, rgba(108, 92, 231, 0.158) 0%, transparent 45%),
+        /* Topo Esquerdo */
+        radial-gradient(circle at 90% 85%, rgba(108, 92, 231, 0.61) 0%, transparent 40%);
+    /* Baixo Direito */
+
+    /* Suaviza o glow e o torna mais etéreo */
+    filter: blur(100px);
+    /* Garante que o glow não fique na frente do conteúdo (texto, cards, etc.) */
+    pointer-events: none;
+}
+
+/* --- ESTILO CORRIGIDO DO CARROSSEL (SEÇÃO PROJETOS) --- */
+
+.projects-swiper {
+    width: 100%;
+    padding: 2rem 0;
+    overflow: hidden;
+    /* evita corte de slides */
+}
+
+/* cada slide ocupa um espaço uniforme controlado pelo Swiper */
+.swiper-slide {
+    display: flex !important;
+    justify-content: center;
+    align-items: stretch;
+    height: auto;
+}
+
+/* largura e aparência dos cards */
+.project-card {
+    width: 100%;
+    max-width: 360px;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+/* botões laterais */
+.swiper-button-prev,
+.swiper-button-next {
+    color: white;
+    background-color: var(--primary);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* esconder em telas pequenas */
+@media (max-width: 768px) {
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        display: none;
+    }
+}
+
+
+
+.bg-deep-dark {
+    background-color: var(--deep-dark);
+}
+
+/* --- ESTILO DO NOVO BOTÃO CTA --- */
+.cta {
+    /* ... Outras propriedades ... */
+
+    /* PROPRIEDADE CRÍTICA: Corta o conteúdo que transborda, fixando a animação */
+    overflow: hidden;
+
+    /* Garantindo que o botão e seu pseudo-elemento se posicionem corretamente */
+    position: relative;
+
+    padding: 11.5px 18px;
+    transition: all 0.2s ease;
+    border: 3px solid var(--primary);
+    border-radius: 50px;
+    background: var(--primary);
+    cursor: none;
+
+    display: inline-flex;
+    align-items: center;
+}
+
+.cta:before {
+    content: "";
+    position: absolute;
+    /* NOVO: Centraliza verticalmente o 'before' no botão */
+    top: 50%;
+    transform: translateY(-50%);
+
+    right: 0;
+    display: block;
+    border-radius: 50px;
+    background: white;
+
+    /* NOVO: Aumenta ligeiramente o tamanho para cobrir a borda inferior */
+    width: 48px;
+    height: 48px;
+
+    transition: all 0.8s ease;
+}
+
+.cta span {
+    position: relative;
+    /* Ajustado para a sua fonte padrão 'Poppins' */
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: white;
+    font-weight: 500;
+    /* Usei 500 para combinar com o Poppins */
+    letter-spacing: 0.05em;
+    /* Garante que o texto fique acima do 'before' */
+    z-index: 2;
+}
+
+.cta svg {
+    position: relative;
+    top: 0;
+    margin-left: 10px;
+
+    /* MUDANÇA PRINCIPAL: Usa preenchimento (fill) em vez de traço (stroke) */
+    fill: black;
+    stroke: none;
+    /* Garante que qualquer stroke residual seja removido */
+
+    /* As propriedades abaixo eram para a seta, mas não interferem tanto no novo ícone */
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 0;
+    /* Defino como 0, pois o ícone usa FILL, não STROKE */
+
+    transform: translateX(3.5px);
+    /* Posição inicial (desliza para a direita no hover) */
+    transition: all 0.5s ease;
+    z-index: 2;
+}
+
+.cta:hover:before {
+    width: 100%;
+    /* Use sua cor escura de fundo para o hover */
+    background: var(--dark);
+}
+
+.cta:hover {
+
+
+    /* NOVO: Box-Shadow para o Glow 100% */
+    /* Sintaxe: offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 0 0 18px 5px rgba(108, 92, 231, 0.7);
+    /* Glow mais intenso */
+}
+
+/* --- Garante que o ícone permaneça branco no hover (contraste com o fundo preto) --- */
+.cta:hover svg {
+    /* Mantém a animação de deslize no lugar */
+    transform: translateX(0);
+    transition: all 0.5s ease;
+
+    /* Garante a cor branca */
+    fill: white;
+}
+
+.cta:hover span {
+    color: white;
+}
+
+.cta:active {
+    transform: scale(0.95);
+    transition: all 0.2s ease;
+    /* Reduzi o tempo para uma transição mais rápida */
+}
+
+/* Estado Inicial: Transparente e SEM BORDA */
+.nav-transparent {
+    background-color: transparent;
+    /* Define a borda com cor transparente, garantindo que não seja visível */
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+}
+
+/* Estado ROLADO: Fundo Escuro com Blur e BORDA APARENTE */
+.scrolled {
+    background-color: rgba(30, 30, 30, 0.322);
+    /* var(--dark) com 90% de opacidade */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    /* Para compatibilidade com Safari */
+    /* Adiciona a borda com a cor primária, tornando-a visível */
+    border-bottom: 1px solid var(--primary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+.hero-section {
+    position: relative;
+    /* CRUCIAL! As estrelas (absolute) se basearão neste limite */
+    min-height: 100vh;
+    /* Opcional: Garante que o fundo da hero section seja de pelo menos 100% da tela */
+    overflow: hidden;
+    /* CRUCIAL! Garante que as estrelas só apareçam DENTRO desta área */
+}
+
+
+/* --- HERO BACKGROUND E OVERLAY --- */
+
+.hero-background {
+    /* Sua imagem de fundo noturno */
+    background-image: url('backthreenoite.jpeg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Adiciona um overlay escuro para melhor legibilidade do texto e profundidade */
+.hero-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* Overlay escuro de 40% */
+    z-index: 2;
+}
+
+/* Correção para posicionar a canvas dos pássaros em tela cheia e atrás do conteúdo */
+.Background {
+    position: fixed;
+    /* Fixa o elemento na viewport */
+    top: 0;
+    /* Alinha o topo com o topo da viewport */
+    left: 0;
+    /* Alinha a esquerda com a esquerda da viewport */
+    width: 100%;
+    /* Garante que cubra toda a largura */
+    height: 100%;
+    /* Garante que cubra toda a altura */
+    z-index: -1;
+    /* CRÍTICO: Coloca a canvas *atrás* de todo o seu conteúdo (navbar, texto, etc.) */
+    margin: 0;
+    /* Remove qualquer margem que possa empurrá-lo */
+    padding: 0;
+    /* Remove qualquer padding interno */
+    overflow: hidden;
+    /* Evita barras de rolagem desnecessárias */
+}
+
+/* Opcional: Garante que o elemento canvas interno não cause problemas */
+#Background {
+    display: block;
+}
+
+/* CSS PARA POSICIONAR O CANVAS DOS PÁSSAROS COMO OVERLAY */
+#bird-background {
+    position: fixed;
+    /* Fixa o fundo na tela, independente da rolagem */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* CRÍTICO: Garante que o canvas fique atrás de todo o conteúdo (Navbar, texto, imagens) */
+    z-index: -5;
+    /* Garante que o mouse interaja com o conteúdo do portfólio, e não com o canvas */
+    pointer-events: none;
+}
+
+#finisher-canvas {
+    z-index: -2 !important;
+    /* O !important é necessário para sobrescrever o estilo inline da biblioteca. */
+}
+
+/* Opcional: Garante que o canvas ocupe 100% do seu contêiner pai (#bird-background) */
+#bird-background canvas {
+    display: block;
+}
+
+/* Keyframe de bater de asas (Flapping) - Muda a escala vertical */
+@keyframes flap {
+    0% {
+        transform: scaleY(1);
+        /* Asas abertas */
+    }
+
+    100% {
+        transform: scaleY(0.6);
+        /* Asas fechando */
+    }
+}
+
+
+/* Keyframe de voo: o pássaro atravessa a tela (AJUSTADO) */
+@keyframes fly {
+    0% {
+        /* Inicia à esquerda e no fundo. Aplica a rotação de trajetória aqui. */
+        transform: translateX(-10vw) translateY(calc(var(--y-pos, 0) + 50vh)) scale(var(--scale-size, 1)) rotate(-15deg);
+        opacity: 0.1;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        /* Termina à direita e no topo. Aplica a rotação de trajetória aqui. */
+        transform: translateX(100vw) translateY(calc(var(--y-pos, 0) - 50vh)) scale(var(--scale-size, 1)) rotate(-15deg);
+        opacity: 0.1;
+    }
+}
+
+/* Aplica a animação no elemento */
+.animate-bird {
+    animation: fly var(--fly-duration, 15s) linear forwards;
+}
+
+/* --- ANIMAÇÃO DAS ESTRELAS CADENTES (CSS TRAJETÓRIA) --- */
+
+#shooting-star-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ocupa toda a Hero Section */
+    z-index: 1;
+    /* Mantém as estrelas atrás do conteúdo principal (texto/avatar) */
+    pointer-events: none;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 15px;
+    /* Tamanho da estrela (ponto) */
+    height: 5px;
+    background-color: var(--light);
+    border-radius: 50%;
+    /* Adiciona um pequeno brilho na *cabeça* da estrela */
+    box-shadow: 0 0 10px 6px var(--light);
+    /* BRILHO 1: Na bolha principal */
+    pointer-events: none;
+    /* Certifique-se de que a animação esteja aplicada aqui */
+    animation: shooting 10000ms linear;
+}
+
+/* Duração da animação (1 segundo) */
+
+/* Cria a cauda da estrela */
+.shooting-star::after {
+    content: '';
+    position: absolute;
+    /* Ajuste o transform-origin para que a cauda se estenda para TRÁS (esquerda) */
+    transform-origin: center right;
+    top: 50%;
+    right: 0;
+    /* Começa à direita da estrela */
+    width: 150px;
+    /* Comprimento do rastro (ajuste se necessário) */
+    height: 3px;
+    /* Espessura do rastro */
+    background: linear-gradient(to left, rgb(255, 255, 255), var(--light));
+    transform: translateY(-50%);
+
+    /* NOVO: GLOW BRANCO NO RASTRO */
+    box-shadow:
+        0 0 5px rgb(255, 255, 255),
+        /* Brilho interno branco e suave */
+        0 0 15px rgb(255, 255, 255);
+    /* Brilho externo branco e difuso */
+
+    z-index: -1;
+}
+
+/* Keyframes para a animação: CIMA-CENTRO para BAIXO-ESQUERDA */
+@keyframes shooting {
+    0% {
+        top: 0;
+        /* left: 50%; - Esta linha é removida, pois a posição inicial é definida pelo JavaScript */
+        opacity: 1;
+        /* GARANTE QUE ELA APAREÇA NO INÍCIO */
+        /* Rotação POSITIVA de 45deg para orientar a queda para o canto inferior direito */
+        transform: rotate(45deg) translateX(0) scale(1);
+    }
+
+    100% {
+        top: 100%;
+        left: 110%;
+        /* Aumentamos a translação para garantir que ela saia da tela */
+        opacity: 0;
+        /* GARANTE QUE ELA DESAPAREÇA NO FIM */
+        transform: rotate(45deg) translateX(2500px) scale(0.8);
+        /* Aumentei o valor de 1500px para 2500px para garantir a saída */
+    }
+}
+
+/* Classe de animação única */
+.animate-star-group {
+    animation-name: shooting;
+    animation-duration: 4s;
+    /* Duração da queda */
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+/* Base do contêiner do avatar */
+#avatar-wrapper {
+    position: relative;
+}
+
+/* Contêiner do círculo que corta a imagem padrão */
+#circle-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    /* Isso fará o corte da imagem padrão */
+    border: 4px solid var(--primary);
+    box-shadow: 0 10px 15px -3px rgba(108, 92, 231, 0.5), 0 4px 6px -2px rgba(108, 92, 231, 0.1);
+    z-index: 10;
+    transition: transform 0.4s ease;
+}
+
+/* Imagem padrão, dentro do círculo */
+#avatar-default {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+/* Imagem PNG que fica por cima do círculo */
+#hover-image {
+    position: absolute;
+    top: -50px;
+    /* Ajuste conforme necessário */
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    width: 100%;
+    /* Ajuste para não cortar o PNG */
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+    /* Garante que o mouse interaja com a div de baixo */
+    z-index: 20;
+}
+
+/* Efeito de hover: esconde o avatar padrão e mostra o PNG */
+#avatar-wrapper:hover #avatar-default {
+    opacity: 0;
+    transform: scale(1.1);
+}
+
+#avatar-wrapper:hover #hover-image {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+
+/* Outras classes do seu projeto */
+
+.gradient-text {
+    background: linear-gradient(90deg, #9c27b0, #6c5ce7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #6c5ce7 0%, #5d4aec 100%);
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 25px -5px rgba(108, 92, 231, 0.3),
+        0 10px 10px -5px rgba(108, 92, 231, 0.1);
+}
+
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.skill-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #2d2d2d;
+    stroke-width: 8;
+}
+
+.circle-progress {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    stroke-dasharray: 283;
+    transition: stroke-dashoffset 1.5s ease;
+}
+
+/* --- Estilo de Glassmorphism para Cards --- */
+.glass-card {
+    /* 1. Fundo semi-transparente (você pode ajustar a opacidade 0.2, 0.3, etc.) */
+    background-color: rgba(30, 30, 30, 0.4);
+
+    /* 2. O EFEITO Glassmorphism: Desfoque de Fundo */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    /* 3. Borda sutil para dar o efeito de vidro */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    /* 4. Sombra interna para profundidade */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+    /* 5. Transição suave */
+    transition: all 0.4s ease;
+
+    /* Ajuste para garantir que o texto não seja afetado pelo blur */
+    z-index: 10;
+}
+
+/* Efeito no Hover (Opcional, mas recomendado) */
+.glass-card:hover {
+    background-color: rgba(30, 30, 30, 0.6);
+    /* Fica um pouco menos transparente */
+    border-color: rgba(108, 92, 231, 0.5);
+    /* Borda fica sutilmente roxa */
+    transform: translateY(-3px);
+    /* Leve elevação */
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+}
+
+.delay-4 {
+    animation-delay: 0.8s;
+}
+
+.typewriter {
+    overflow: hidden;
+    border-right: 3px solid var(--primary);
+    white-space: nowrap;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+/* --- Personaliza a Cor da Seleção de Texto (Duplo Clique) --- */
+
+/* Regra Padrão (para a maioria dos navegadores) */
+::selection {
+    background: #3a3a3a;
+    /* Fundo cinza escuro/médio para a seleção */
+    color: var(--light);
+    /* Cor do texto selecionado fica roxo */
+}
+
+/* Regra para Compatibilidade com Firefox */
+::-moz-selection {
+    background: #3a3a3a;
+    /* Fundo cinza escuro/médio */
+    color: var(--light);
+    /* Cor do texto selecionado fica roxo */
+}
+
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: var(--primary)
+    }
+}
