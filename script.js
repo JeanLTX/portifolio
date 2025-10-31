@@ -278,7 +278,7 @@ $(document).ready(function () {
     });
 
     // Calcula distância de scroll (uma "página" -> container width)
-    const scrollAmount = () => Math.round(projectsGrid.clientWidth * 0.9);
+    const scrollAmount = () => Math.round(projectsGrid.clientWidth * 0.9); // rola quase 1 tela
 
     prevBtn.addEventListener('click', () => {
         projectsGrid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
@@ -305,7 +305,7 @@ window.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const scrollAmount = () => carousel.clientWidth * 0.9; // rola quase 1 tela
+    const scrollAmount = () => carousel.clientWidth * 1.1; // rola 1 tela
 
     prevBtn.addEventListener('click', () => {
         console.log("⬅️ clicou no botão anterior");
