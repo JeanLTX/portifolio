@@ -254,3 +254,69 @@ $(document).ready(function () {
         color: 'rgb(0, 0, 0, 1)'
     });
 });
+
+// ---------- Projects carousel simple controls ----------
+(function () {
+    // seletor do grid de projetos (ajuste se sua estrutura mudar)
+    const projectsGrid = document.querySelector('#projects .max-w-7xl > .grid') || document.querySelector('#projects .grid');
+    const prevBtn = document.getElementById('projects-prev');
+    const nextBtn = document.getElementById('projects-next');
+
+    if (!projectsGrid || !prevBtn || !nextBtn) return;
+
+    // Tornar o container scrollable no eixo X (sem quebrar layout em desktop)
+    projectsGrid.style.overflowX = 'auto';
+    projectsGrid.style.scrollBehavior = 'smooth';
+    projectsGrid.style.whiteSpace = 'nowrap';
+    // Para cada card, força que seja inline-block para o scroll funcionar melhor
+    const cards = projectsGrid.querySelectorAll('.project-card');
+    cards.forEach(card => {
+        card.style.display = 'inline-block';
+        card.style.verticalAlign = 'top';
+        card.style.width = getComputedStyle(card).width; // mantém o tamanho atual
+        card.style.marginRight = getComputedStyle(card).marginRight;
+    });
+
+    // Calcula distância de scroll (uma "página" -> container width)
+    const scrollAmount = () => Math.round(projectsGrid.clientWidth * 0.9);
+
+    prevBtn.addEventListener('click', () => {
+        projectsGrid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+        projectsGrid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+    });
+
+})();
+
+// ---------- Projects carousel scroll ----------
+window.addEventListener("DOMContentLoaded", () => {
+    const carousel = document.querySelector('.projects-carousel');
+    const prevBtn = document.getElementById('projects-prev');
+    const nextBtn = document.getElementById('projects-next');
+
+    console.log("carousel:", carousel);
+    console.log("prevBtn:", prevBtn);
+    console.log("nextBtn:", nextBtn);
+
+    if (!carousel || !prevBtn || !nextBtn) {
+        console.warn("Carrossel ou botões não encontrados!");
+        return;
+    }
+
+    const scrollAmount = () => carousel.clientWidth * 0.9; // rola quase 1 tela
+
+    prevBtn.addEventListener('click', () => {
+        console.log("⬅️ clicou no botão anterior");
+        carousel.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+        console.log("➡️ clicou no botão próximo");
+        carousel.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+    });
+
+    console.log("Carrossel inicializado!");
+});
+

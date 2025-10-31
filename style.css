@@ -677,3 +677,111 @@ textarea {
         border-color: var(--primary)
     }
 }
+
+.projects-carousel-wrapper {
+    position: relative;
+    margin-top: 1rem;
+    /* um pouco de espaço acima dos botões — ajuste se necessário */
+}
+
+/* Botões nav redondos */
+.projects-nav-btn {
+    position: absolute;
+    top: calc(50% + -230px);
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    /* usa sua cor primária */
+    box-shadow: 0 6px 18px rgba(108, 92, 231, 0.18);
+    cursor: none;
+    z-index: 40;
+    transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    opacity: 0.98;
+}
+
+/* Left / Right positions */
+#projects-prev {
+    left: -70px;
+    /* meio fora do contêiner — ajuste conforme gosto */
+}
+
+#projects-next {
+    right: -70px;
+}
+
+/* Ícone branco dentro do botão */
+.projects-nav-btn svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    fill: white;
+    pointer-events: none;
+}
+
+/* Hover / active states */
+.projects-nav-btn:hover {
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 10px 28px rgba(108, 92, 231, 0.28);
+}
+
+.projects-nav-btn:active {
+    transform: translateY(-50%) scale(0.96);
+}
+
+/* Mobile: reduzir distância lateral e manter visível */
+@media (max-width: 768px) {
+    #projects-prev {
+        left: 8px;
+    }
+
+    #projects-next {
+        right: 8px;
+    }
+
+    .projects-nav-btn {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Optional: evita que os botões cubram links clicáveis dos cards */
+.projects-nav-btn {
+    pointer-events: auto;
+}
+
+/* ------- Projects carousel layout ------- */
+.projects-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 1.5rem;
+    /* mesmo espaçamento dos cards */
+    scrollbar-width: none;
+    /* esconde scrollbar no Firefox */
+}
+
+.projects-carousel::-webkit-scrollbar {
+    display: none;
+    /* esconde scrollbar no Chrome */
+}
+
+/* Cards dentro do carrossel */
+.projects-carousel .project-card {
+    flex: 0 0 calc(33.333% - 1rem);
+    /* 3 cards por vez */
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .projects-carousel .project-card {
+        flex: 0 0 80%;
+        /* em telas pequenas, um card por vez */
+    }
+}
