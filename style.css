@@ -813,3 +813,27 @@ textarea {
     background-color: var(--primary);
     transform: scale(1.2);
 }
+
+/* --- Estilos para o Select Personalizado --- */
+#custom-select-trigger {
+    cursor: none; /* Mantém o cursor personalizado */
+    user-select: none; /* Impede a seleção de texto */
+}
+
+#custom-select-trigger.open i {
+    transform: rotate(180deg);
+}
+
+/* Aplica o efeito de glassmorphism na lista de opções */
+#custom-select-options {
+    background-color: rgba(30, 30, 30, 0.89);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--light);
+}
+
+/* --- Estilos para Validação do Formulário --- */
+.input-error {
+    border-color: #f87171 !important; /* Tailwind's red-400 */
+}

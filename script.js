@@ -469,3 +469,148 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 50);
     updateDots(); // Ativa o primeiro ponto no carregamento
 });
+
+// ---------- Custom Select (Contact Form) ----------
+document.addEventListener('DOMContentLoaded', () => {
+    const selectWrapper = document.querySelector('.custom-select-wrapper');
+    if (!selectWrapper) return;
+
+    const trigger = document.getElementById('custom-select-trigger');
+    const optionsContainer = document.getElementById('custom-select-options');
+    const options = optionsContainer.querySelectorAll('.custom-option');
+    const label = document.getElementById('custom-select-label');
+
+    trigger.addEventListener('click', () => {
+        optionsContainer.classList.toggle('hidden');
+        trigger.classList.toggle('open');
+    });
+
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            label.textContent = option.textContent;
+            label.classList.remove('text-gray-400'); // Muda a cor para indicar que foi selecionado
+            label.classList.add('text-white');
+            optionsContainer.classList.add('hidden');
+            trigger.classList.remove('open');
+        });
+    });
+
+    // Fecha o select se clicar fora dele
+    window.addEventListener('click', (e) => {
+        if (!selectWrapper.contains(e.target)) {
+            optionsContainer.classList.add('hidden');
+            trigger.classList.remove('open');
+        }
+    });
+});
+
+// ---------- Form Validation ----------
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contact-form');
+    if (!contactForm) return;
+
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const subjectTrigger = document.getElementById('custom-select-trigger');
+    const subjectLabel = document.getElementById('custom-select-label');
+    const messageInput = document.getElementById('message');
+    const successMessage = document.getElementById('success-message');
+
+    const initialSubjectText = 'Selecione o motivo do contato';
+
+    const showError = (input, message) => {
+        const formControl = input.parentElement;
+        const errorElement = formControl.querySelector('.error-message');
+        
+        if (errorElement) {
+            errorElement.innerText = message;
+            errorElement.classList.remove('hidden');
+        }
+        
+        // Adiciona a classe de erro ao campo de input ou ao trigger do select
+        const field = input.id === 'custom-select-trigger' ? input : formControl.querySelector('input, textarea');
+        if(field) {
+            field.classList.add('input-error');
+        } else {
+             // Caso especial para o custom select
+            subjectTrigger.classList.add('input-error');
+        }
+    };
+
+    const hideErrors = () => {
+        const errorMessages = contactForm.querySelectorAll('.error-message');
+        errorMessages.forEach(error => error.classList.add('hidden'));
+
+        const formControls = contactForm.querySelectorAll('input, textarea, #custom-select-trigger');
+        formControls.forEach(control => control.classList.remove('input-error'));
+    };
+
+    const validateEmail = (email) => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    };
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        hideErrors();
+        let isValid = true;
+
+        if (nameInput.value.trim() === '') {
+            showError(nameInput.parentElement, 'Por favor, preencha seu nome.');
+            isValid = false;
+        }
+
+        if (emailInput.value.trim() === '' || !validateEmail(emailInput.value)) {
+            showError(emailInput.parentElement, 'Por favor, insira um e-mail válido.');
+            isValid = false;
+        }
+
+        if (subjectLabel.textContent === initialSubjectText) {
+            showError(subjectTrigger, 'Por favor, selecione um assunto.');
+            isValid = false;
+        }
+
+        if (messageInput.value.trim() === '') {
+            showError(messageInput.parentElement, 'Por favor, escreva sua mensagem.');
+            isValid = false;
+        }
+
+        if (isValid) {
+            const yourNumber = '5516992640814'; // SEU NÚMERO DE WHATSAPP AQUI (com código do país)
+
+            // Coleta os dados dos campos
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const subject = subjectLabel.textContent;
+            const message = messageInput.value.trim();
+
+            // Monta a mensagem para o WhatsApp
+            const whatsappMessage = `
+*Novo Contato do Portfólio!* 🚀
+-----------------------------------
+*Nome:* ${name}
+*E-mail:* ${email}
+*Assunto:* ${subject}
+-----------------------------------
+*Mensagem:*
+${message}
+            `;
+
+            // Cria o link e abre em uma nova aba
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${yourNumber}&text=${encodeURIComponent(whatsappMessage.trim())}`;
+            window.open(whatsappUrl, '_blank');
+
+            // Opcional: Você pode resetar o formulário e mostrar a mensagem de sucesso
+            contactForm.reset();
+            subjectLabel.textContent = initialSubjectText;
+            subjectLabel.classList.add('text-gray-400');
+            subjectLabel.classList.remove('text-white');
+            successMessage.classList.remove('hidden');
+
+            // Esconde a mensagem de sucesso após alguns segundos
+            setTimeout(() => {
+                successMessage.classList.add('hidden');
+            }, 10000);
+        }
+    });
+});
