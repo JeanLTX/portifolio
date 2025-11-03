@@ -260,6 +260,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const carousel = document.querySelector('.projects-carousel');
     const prevButton = document.getElementById('projects-prev');
     const nextButton = document.getElementById('projects-next');
+    const dotsContainer = document.getElementById('projects-dots');
 
     if (!carousel || !prevButton || !nextButton) {
         console.warn("Carousel elements not found, skipping initialization.");
@@ -278,6 +279,37 @@ window.addEventListener("DOMContentLoaded", () => {
             return 2; // Rola 2 cards em telas de tablet
         }
         return 3; // Rola 3 cards em telas de desktop
+    };
+
+    let totalPages = 0;
+
+    // Função para criar/recriar os pontos de paginação
+    const createDots = () => {
+        if (!dotsContainer) return;
+        dotsContainer.innerHTML = ''; // Limpa os pontos existentes
+        totalPages = Math.ceil(originalCards.length / getCardsToScroll());
+
+        for (let i = 0; i < totalPages; i++) {
+            const dot = document.createElement('button');
+            dot.classList.add('dot');
+            dot.setAttribute('aria-label', `Ir para página ${i + 1}`);
+            dot.addEventListener('click', () => {
+                goToPage(i);
+            });
+            dotsContainer.appendChild(dot);
+        }
+    };
+
+    // Função para atualizar o ponto ativo
+    const updateDots = () => {
+        if (!dotsContainer) return;
+        const cardsToScroll = getCardsToScroll();
+        // Calcula a página atual baseada no `currentIndex` e nos clones
+        const currentPage = Math.round((currentIndex - cardsToScroll) / cardsToScroll);
+        const dots = Array.from(dotsContainer.children);
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentPage);
+        });
     };
 
     // 1. Clonar cards para o efeito infinito
@@ -305,6 +337,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     cloneCards();
+    createDots(); // Cria os pontos iniciais
 
     let allCards = Array.from(carousel.children);
     let cardWidth = allCards[0].offsetWidth + parseFloat(getComputedStyle(carousel).gap);
@@ -316,6 +349,7 @@ window.addEventListener("DOMContentLoaded", () => {
         const initialOffset = -currentIndex * cardWidth;
         carousel.style.transform = `translateX(${initialOffset}px)`;
     };
+
 
     updateInitialPosition();
 
@@ -330,10 +364,64 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const offset = -currentIndex * cardWidth;
         carousel.style.transform = `translateX(${offset}px)`;
+        updateDots();
+    };
+
+    // Função para navegar para uma página específica (clique no dot)
+    const goToPage = (pageIndex) => {
+        if (isTransitioning) return;
+        const cardsToScroll = getCardsToScroll();
+        const targetIndex = (pageIndex * cardsToScroll) + cardsToScroll;
+        const direction = 0; // Apenas para atualizar o índice
+        currentIndex = targetIndex;
+        slide(direction);
     };
 
     nextButton.addEventListener('click', () => slide(1));
     prevButton.addEventListener('click', () => slide(-1));
+
+    // 5. Lógica de Swipe (Arrastar com o dedo) para Mobile
+    let touchStartX = 0;
+    let touchMoveX = 0;
+    let isDragging = false;
+
+    const handleTouchStart = (e) => {
+        touchStartX = e.touches[0].clientX;
+        isDragging = true;
+        // Desabilita a transição para que o carrossel siga o dedo instantaneamente
+        carousel.style.transition = 'none';
+    };
+
+    const handleTouchMove = (e) => {
+        if (!isDragging) return;
+        touchMoveX = e.touches[0].clientX;
+        const deltaX = touchMoveX - touchStartX;
+        const initialOffset = -currentIndex * cardWidth;
+        // Move o carrossel em tempo real
+        carousel.style.transform = `translateX(${initialOffset + deltaX}px)`;
+    };
+
+    const handleTouchEnd = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        // Reabilita a transição para o efeito de "snap"
+        carousel.style.transition = 'transform 0.5s ease-in-out';
+
+        const deltaX = touchMoveX - touchStartX;
+        const swipeThreshold = cardWidth / 4; // O usuário precisa arrastar pelo menos 1/4 do card
+
+        if (deltaX < -swipeThreshold) {
+            slide(1); // Swipe para a esquerda (próximo)
+        } else if (deltaX > swipeThreshold) {
+            slide(-1); // Swipe para a direita (anterior)
+        } else {
+            slide(0); // Swipe curto, volta para a posição atual
+        }
+    };
+
+    carousel.addEventListener('touchstart', handleTouchStart);
+    carousel.addEventListener('touchmove', handleTouchMove);
+    carousel.addEventListener('touchend', handleTouchEnd);
 
     // 4. Lógica do Loop Infinito
     carousel.addEventListener('transitionend', () => {
@@ -356,6 +444,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         isTransitioning = false;
+        updateDots(); // Garante que o ponto correto esteja ativo após o "salto" do loop
     });
 
     // quando redimensionar, recomputa (mantém o snap)
@@ -364,11 +453,13 @@ window.addEventListener("DOMContentLoaded", () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
             // Recalcula tudo que depende do tamanho da tela
+            createDots(); // Recria os pontos para o novo número de páginas
             cloneCards(); // Recria os clones se necessário
             allCards = Array.from(carousel.children);
             cardWidth = allCards[0].offsetWidth + parseFloat(getComputedStyle(carousel).gap);
             currentIndex = getCardsToScroll();
             updateInitialPosition();
+            updateDots();
         }, 120);
     });
 
@@ -376,4 +467,5 @@ window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         carousel.style.transition = 'transform 0.5s ease-in-out';
     }, 50);
+    updateDots(); // Ativa o primeiro ponto no carregamento
 });

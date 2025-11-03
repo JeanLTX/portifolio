@@ -744,17 +744,9 @@ textarea {
 
 /* Mobile: reduzir distância lateral e manter visível */
 @media (max-width: 768px) {
-    #projects-prev {
-        left: -10px; /* Levemente para fora em telas pequenas */
-    }
-
-    #projects-next {
-        right: -10px; /* Levemente para fora em telas pequenas */
-    }
-
     .projects-nav-btn {
-        width: 44px;
-        height: 44px;
+        /* Esconde os botões em telas mobile, já que temos o swipe */
+        display: none;
     }
 }
 
@@ -805,4 +797,19 @@ textarea {
         /* Em tablets, cada card ocupa 48% para mostrar 2 por vez com um gap */
         flex: 0 0 calc(50% - 0.75rem);
     }
+}
+
+/* Estilos para os indicadores de página (bolinhas) */
+#projects-dots .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: none; /* Mantém o cursor personalizado */
+}
+
+#projects-dots .dot.active {
+    background-color: var(--primary);
+    transform: scale(1.2);
 }
