@@ -853,3 +853,9 @@ body {
         display: none !important;
     }
 }
+
+/* --- Correção para o Swipe do Carrossel no Mobile --- */
+/* Informa ao navegador que a principal ação de toque neste elemento é o swipe horizontal */
+.projects-carousel .project-card {
+    touch-action: pan-y; /* Permite a rolagem vertical da página, mas prioriza o swipe horizontal do nosso script */
+}
