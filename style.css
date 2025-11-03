@@ -680,13 +680,16 @@ textarea {
 
 .projects-container {
     position: relative;
-    /* Removemos o padding para que o wrapper do carrossel ocupe 100% da largura */
-    /* padding: 0 20px; */
+    /* Adicionamos um padding que corresponderá à margem negativa do wrapper. */
+    /* Isso mantém os botões no lugar e dá espaço para o wrapper "crescer". */
+    padding: 0 10px;
 }
 
 .projects-carousel-wrapper {
     /* Garante que os cards clonados para o loop infinito não fiquem visíveis */
     overflow: hidden;
+    /* Puxamos o wrapper para fora com margem negativa para evitar cortes. */
+    margin: 0 -10px;
 }
 
 /* Botões nav redondos */
@@ -791,13 +794,15 @@ textarea {
 }
 
 @media (max-width: 768px) {
-    .project-card {
-        flex: 0 0 80%;
+    .projects-carousel .project-card {
+        /* Em telas de celular, cada card ocupa 90% da largura do contêiner */
+        flex: 0 0 90%;
     }
 }
 
 @media (max-width: 1024px) {
-    .project-card {
-        flex: 0 0 280px;
+    .projects-carousel .project-card {
+        /* Em tablets, cada card ocupa 48% para mostrar 2 por vez com um gap */
+        flex: 0 0 calc(50% - 0.75rem);
     }
 }

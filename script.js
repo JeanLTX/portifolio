@@ -268,26 +268,36 @@ window.addEventListener("DOMContentLoaded", () => {
 
     let originalCards = Array.from(carousel.children);
     let isTransitioning = false;
-    const cardsPerView = 3; // Quantos cards rolam por vez
+
+    // Função para determinar quantos cards rolar com base na largura da tela
+    const getCardsToScroll = () => {
+        if (window.innerWidth <= 768) {
+            return 1; // Rola 1 card em telas de celular
+        }
+        if (window.innerWidth <= 1024) {
+            return 2; // Rola 2 cards em telas de tablet
+        }
+        return 3; // Rola 3 cards em telas de desktop
+    };
 
     // 1. Clonar cards para o efeito infinito
     const cloneCards = () => {
+        const cardsToClone = getCardsToScroll();
         // Limpa clones antigos se a função for chamada novamente (em resize)
         Array.from(carousel.children).forEach(card => {
             if (card.classList.contains('clone')) {
                 carousel.removeChild(card);
             }
         });
-
-        // Clona os primeiros 'cardsPerView' e adiciona ao final
-        for (let i = 0; i < cardsPerView; i++) {
+        // Clona os primeiros 'cardsToClone' e adiciona ao final
+        for (let i = 0; i < cardsToClone; i++) {
             const clone = originalCards[i].cloneNode(true);
             clone.classList.add('clone');
             carousel.appendChild(clone);
         }
 
-        // Clona os últimos 'cardsPerView' e adiciona ao início
-        for (let i = originalCards.length - 1; i > originalCards.length - 1 - cardsPerView; i--) {
+        // Clona os últimos 'cardsToClone' e adiciona ao início
+        for (let i = originalCards.length - 1; i >= originalCards.length - cardsToClone; i--) {
             const clone = originalCards[i].cloneNode(true);
             clone.classList.add('clone');
             carousel.insertBefore(clone, carousel.firstChild);
@@ -298,7 +308,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     let allCards = Array.from(carousel.children);
     let cardWidth = allCards[0].offsetWidth + parseFloat(getComputedStyle(carousel).gap);
-    let currentIndex = cardsPerView; // Começa nos cards originais
+    let currentIndex = getCardsToScroll(); // Começa nos cards originais
 
     // 2. Posicionar o carrossel no início correto (após os clones da esquerda)
     const updateInitialPosition = () => {
@@ -315,7 +325,8 @@ window.addEventListener("DOMContentLoaded", () => {
         isTransitioning = true;
 
         carousel.style.transition = 'transform 0.5s ease-in-out';
-        currentIndex += direction * cardsPerView;
+        const cardsToScroll = getCardsToScroll();
+        currentIndex += direction * cardsToScroll;
 
         const offset = -currentIndex * cardWidth;
         carousel.style.transform = `translateX(${offset}px)`;
@@ -326,18 +337,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // 4. Lógica do Loop Infinito
     carousel.addEventListener('transitionend', () => {
+        const cardsToScroll = getCardsToScroll();
+
         // Se chegamos aos clones da direita
-        if (currentIndex >= originalCards.length + cardsPerView) {
+        if (currentIndex >= originalCards.length + cardsToScroll) {
             carousel.style.transition = 'none';
-            currentIndex = cardsPerView; // Volta para o início dos cards originais
+            currentIndex = cardsToScroll; // Volta para o início dos cards originais
             const offset = -currentIndex * cardWidth;
             carousel.style.transform = `translateX(${offset}px)`;
         }
 
         // Se chegamos aos clones da esquerda
-        if (currentIndex < cardsPerView) {
+        if (currentIndex < cardsToScroll) {
             carousel.style.transition = 'none';
-            currentIndex = originalCards.length; // Vai para o fim dos cards originais
+            currentIndex = originalCards.length; // Vai para o fim dos cards originais (antes dos clones da direita)
             const offset = -currentIndex * cardWidth;
             carousel.style.transform = `translateX(${offset}px)`;
         }
@@ -350,7 +363,11 @@ window.addEventListener("DOMContentLoaded", () => {
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
+            // Recalcula tudo que depende do tamanho da tela
+            cloneCards(); // Recria os clones se necessário
+            allCards = Array.from(carousel.children);
             cardWidth = allCards[0].offsetWidth + parseFloat(getComputedStyle(carousel).gap);
+            currentIndex = getCardsToScroll();
             updateInitialPosition();
         }, 120);
     });
