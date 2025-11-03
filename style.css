@@ -859,3 +859,23 @@ body {
 .projects-carousel .project-card {
     touch-action: pan-y; /* Permite a rolagem vertical da página, mas prioriza o swipe horizontal do nosso script */
 }
+
+/* --- Estilos para os Botões de Navegação do Carrossel (Mobile) --- */
+.mobile-carousel-nav-btn {
+    display: none; /* Escondido por padrão */
+    background-color: rgba(30, 30, 30, 0.5); /* Fundo glass sutil */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+/* Mostra os botões apenas em telas mobile */
+@media (max-width: 768px) {
+    .mobile-carousel-nav-btn {
+        display: flex;
+    }
+}

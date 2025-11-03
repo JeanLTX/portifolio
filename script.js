@@ -302,10 +302,14 @@ window.addEventListener("DOMContentLoaded", () => {
     const carousel = document.querySelector('.projects-carousel');
     const prevButton = document.getElementById('projects-prev');
     const nextButton = document.getElementById('projects-next');
+    // Novos botões para mobile
+    const mobilePrevButton = document.getElementById('mobile-projects-prev');
+    const mobileNextButton = document.getElementById('mobile-projects-next');
     const dotsContainer = document.getElementById('projects-dots');
 
-    if (!carousel || !prevButton || !nextButton) {
-        console.warn("Carousel elements not found, skipping initialization.");
+    // Verificação atualizada para incluir os botões mobile
+    if (!carousel || !prevButton || !nextButton || !mobilePrevButton || !mobileNextButton) {
+        console.warn("Um ou mais elementos do carrossel não foram encontrados, pulando a inicialização.");
         return;
     }
 
@@ -421,6 +425,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     nextButton.addEventListener('click', () => slide(1));
     prevButton.addEventListener('click', () => slide(-1));
+
+    // Adiciona os eventos para os botões mobile
+    mobileNextButton.addEventListener('click', () => slide(1));
+    mobilePrevButton.addEventListener('click', () => slide(-1));
 
     // 5. Lógica de Swipe (Arrastar com o dedo) para Mobile
     let touchStartX = 0;
