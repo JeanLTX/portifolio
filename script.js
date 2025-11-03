@@ -435,27 +435,24 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const handleTouchStart = (e) => {
         touchStartX = e.touches[0].clientX;
-        touchMoveX = touchStartX; // Reseta a posição de movimento
-        isDragging = false; // Começa como falso, só se torna verdadeiro se houver movimento
+        isDragging = true; // Indica que um toque começou
         // Desabilita a transição para que o carrossel siga o dedo instantaneamente
         carousel.style.transition = 'none';
     };
 
     const handleTouchMove = (e) => {
-        if (!isDragging) return;
+        if (!isDragging) return; // Se o toque não começou, não faz nada
+
         touchMoveX = e.touches[0].clientX;
-        // Só começa a arrastar se o movimento for maior que o threshold
-        if (Math.abs(touchMoveX - touchStartX) > dragThreshold) {
-            isDragging = true;
-        }
         const deltaX = touchMoveX - touchStartX;
         const initialOffset = -currentIndex * cardWidth;
+
         // Move o carrossel em tempo real
         carousel.style.transform = `translateX(${initialOffset + deltaX}px)`;
     };
 
     const handleTouchEnd = () => {
-        if (!isDragging) return; // Se não houve arrasto, não faz nada
+        if (!isDragging) return;
 
         // Reabilita a transição para o efeito de "snap"
         carousel.style.transition = 'transform 0.5s ease-in-out';
