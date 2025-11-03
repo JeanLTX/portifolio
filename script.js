@@ -255,68 +255,108 @@ $(document).ready(function () {
     });
 });
 
-// ---------- Projects carousel simple controls ----------
-(function () {
-    // seletor do grid de projetos (ajuste se sua estrutura mudar)
-    const projectsGrid = document.querySelector('#projects .max-w-7xl > .grid') || document.querySelector('#projects .grid');
-    const prevBtn = document.getElementById('projects-prev');
-    const nextBtn = document.getElementById('projects-next');
-
-    if (!projectsGrid || !prevBtn || !nextBtn) return;
-
-    // Tornar o container scrollable no eixo X (sem quebrar layout em desktop)
-    projectsGrid.style.overflowX = 'auto';
-    projectsGrid.style.scrollBehavior = 'smooth';
-    projectsGrid.style.whiteSpace = 'nowrap';
-    // Para cada card, força que seja inline-block para o scroll funcionar melhor
-    const cards = projectsGrid.querySelectorAll('.project-card');
-    cards.forEach(card => {
-        card.style.display = 'inline-block';
-        card.style.verticalAlign = 'top';
-        card.style.width = getComputedStyle(card).width; // mantém o tamanho atual
-        card.style.marginRight = getComputedStyle(card).marginRight;
-    });
-
-    // Calcula distância de scroll (uma "página" -> container width)
-    const scrollAmount = () => Math.round(projectsGrid.clientWidth * 0.9); // rola quase 1 tela
-
-    prevBtn.addEventListener('click', () => {
-        projectsGrid.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-    });
-
-    nextBtn.addEventListener('click', () => {
-        projectsGrid.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-    });
-
-})();
-
-// ---------- Projects carousel scroll ----------
+// ---------- Projects Carousel (Infinite Loop Logic) ----------
 window.addEventListener("DOMContentLoaded", () => {
     const carousel = document.querySelector('.projects-carousel');
-    const prevBtn = document.getElementById('projects-prev');
-    const nextBtn = document.getElementById('projects-next');
+    const prevButton = document.getElementById('projects-prev');
+    const nextButton = document.getElementById('projects-next');
 
-    console.log("carousel:", carousel);
-    console.log("prevBtn:", prevBtn);
-    console.log("nextBtn:", nextBtn);
-
-    if (!carousel || !prevBtn || !nextBtn) {
-        console.warn("Carrossel ou botões não encontrados!");
+    if (!carousel || !prevButton || !nextButton) {
+        console.warn("Carousel elements not found, skipping initialization.");
         return;
     }
 
-    const scrollAmount = () => carousel.clientWidth * 1.1; // rola 1 tela
+    let originalCards = Array.from(carousel.children);
+    let isTransitioning = false;
+    const cardsPerView = 3; // Quantos cards rolam por vez
 
-    prevBtn.addEventListener('click', () => {
-        console.log("⬅️ clicou no botão anterior");
-        carousel.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+    // 1. Clonar cards para o efeito infinito
+    const cloneCards = () => {
+        // Limpa clones antigos se a função for chamada novamente (em resize)
+        Array.from(carousel.children).forEach(card => {
+            if (card.classList.contains('clone')) {
+                carousel.removeChild(card);
+            }
+        });
+
+        // Clona os primeiros 'cardsPerView' e adiciona ao final
+        for (let i = 0; i < cardsPerView; i++) {
+            const clone = originalCards[i].cloneNode(true);
+            clone.classList.add('clone');
+            carousel.appendChild(clone);
+        }
+
+        // Clona os últimos 'cardsPerView' e adiciona ao início
+        for (let i = originalCards.length - 1; i > originalCards.length - 1 - cardsPerView; i--) {
+            const clone = originalCards[i].cloneNode(true);
+            clone.classList.add('clone');
+            carousel.insertBefore(clone, carousel.firstChild);
+        }
+    };
+
+    cloneCards();
+
+    let allCards = Array.from(carousel.children);
+    let cardWidth = allCards[0].offsetWidth + parseFloat(getComputedStyle(carousel).gap);
+    let currentIndex = cardsPerView; // Começa nos cards originais
+
+    // 2. Posicionar o carrossel no início correto (após os clones da esquerda)
+    const updateInitialPosition = () => {
+        carousel.style.transition = 'none'; // Sem animação para o setup inicial
+        const initialOffset = -currentIndex * cardWidth;
+        carousel.style.transform = `translateX(${initialOffset}px)`;
+    };
+
+    updateInitialPosition();
+
+    // 3. Funções de Navegação
+    const slide = (direction) => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        carousel.style.transition = 'transform 0.5s ease-in-out';
+        currentIndex += direction * cardsPerView;
+
+        const offset = -currentIndex * cardWidth;
+        carousel.style.transform = `translateX(${offset}px)`;
+    };
+
+    nextButton.addEventListener('click', () => slide(1));
+    prevButton.addEventListener('click', () => slide(-1));
+
+    // 4. Lógica do Loop Infinito
+    carousel.addEventListener('transitionend', () => {
+        // Se chegamos aos clones da direita
+        if (currentIndex >= originalCards.length + cardsPerView) {
+            carousel.style.transition = 'none';
+            currentIndex = cardsPerView; // Volta para o início dos cards originais
+            const offset = -currentIndex * cardWidth;
+            carousel.style.transform = `translateX(${offset}px)`;
+        }
+
+        // Se chegamos aos clones da esquerda
+        if (currentIndex < cardsPerView) {
+            carousel.style.transition = 'none';
+            currentIndex = originalCards.length; // Vai para o fim dos cards originais
+            const offset = -currentIndex * cardWidth;
+            carousel.style.transform = `translateX(${offset}px)`;
+        }
+
+        isTransitioning = false;
     });
 
-    nextBtn.addEventListener('click', () => {
-        console.log("➡️ clicou no botão próximo");
-        carousel.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+    // quando redimensionar, recomputa (mantém o snap)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            cardWidth = allCards[0].offsetWidth + parseFloat(getComputedStyle(carousel).gap);
+            updateInitialPosition();
+        }, 120);
     });
 
-    console.log("Carrossel inicializado!");
+    // Força o navegador a recalcular o layout antes de reativar a transição
+    setTimeout(() => {
+        carousel.style.transition = 'transform 0.5s ease-in-out';
+    }, 50);
 });
-
