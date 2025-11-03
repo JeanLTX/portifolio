@@ -740,9 +740,11 @@ body {
 
 @media (max-width: 768px) {
     .projects-carousel .project-card {
-        /* Em telas de celular, cada card ocupa 90% da largura do contêiner */
-        flex: 0 0 90%;
+        /* Em telas de celular, cada card ocupa 90% da largura e centraliza */
+        flex: 0 0 90% !important;
+        scroll-snap-align: center;
     }
+
 }
 
 @media (max-width: 1024px) {
