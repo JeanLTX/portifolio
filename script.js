@@ -443,6 +443,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const handleTouchMove = (e) => {
         if (!isDragging) return; // Se o toque não começou, não faz nada
 
+        // Verifica se o movimento horizontal é maior que o vertical
+        const currentX = e.touches[0].clientX;
+        if (Math.abs(currentX - touchStartX) > 5) {
+            // Se o movimento horizontal for intencional, impede a rolagem vertical da página.
+            e.preventDefault();
+        }
+
         touchMoveX = e.touches[0].clientX;
         const deltaX = touchMoveX - touchStartX;
         const initialOffset = -currentIndex * cardWidth;
