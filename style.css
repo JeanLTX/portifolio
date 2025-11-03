@@ -678,8 +678,13 @@ textarea {
     }
 }
 
-.projects-carousel-wrapper {
+.projects-container {
     position: relative;
+    /* Removemos o padding para que o wrapper do carrossel ocupe 100% da largura */
+    /* padding: 0 20px; */
+}
+
+.projects-carousel-wrapper {
     /* Garante que os cards clonados para o loop infinito não fiquem visíveis */
     overflow: hidden;
 }
@@ -707,12 +712,12 @@ textarea {
 
 /* Left / Right positions */
 #projects-prev {
-    left: -25px;
-    /* meio fora do contêiner — ajuste conforme gosto */
+    left: -60px;
+    /* Posiciona o botão no início do contêiner pai */
 }
 
 #projects-next {
-    right: -25px;
+    right: -60px;
 }
 
 /* Ícone branco dentro do botão */
@@ -737,11 +742,11 @@ textarea {
 /* Mobile: reduzir distância lateral e manter visível */
 @media (max-width: 768px) {
     #projects-prev {
-        left: -10px;
+        left: -10px; /* Levemente para fora em telas pequenas */
     }
 
     #projects-next {
-        right: -10px;
+        right: -10px; /* Levemente para fora em telas pequenas */
     }
 
     .projects-nav-btn {
