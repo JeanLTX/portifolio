@@ -426,7 +426,7 @@ window.addEventListener("DOMContentLoaded", () => {
     let touchStartX = 0;
     let touchMoveX = 0;
     let isDragging = false;
-    let dragThreshold = 10; // Mínimo de pixels para considerar um "arrastar"
+    let dragThreshold = 5; // Mínimo de pixels para considerar um "arrastar"
 
     // Impede que o clique nos cards seja acionado durante o swipe
     carousel.addEventListener('click', (e) => {
