@@ -458,9 +458,9 @@ window.addEventListener("DOMContentLoaded", () => {
         carousel.style.transition = 'transform 0.5s ease-in-out';
 
         const deltaX = touchMoveX - touchStartX;
-        const swipeThreshold = cardWidth / 4; // O usuário precisa arrastar pelo menos 1/4 do card
+        const swipeThreshold = 30; // Limiar de 30 pixels para acionar o swipe
 
-        if (deltaX < -swipeThreshold) {
+        if (deltaX < -swipeThreshold && deltaX !== 0) {
             slide(1); // Swipe para a esquerda (próximo)
         } else if (deltaX > swipeThreshold) {
             slide(-1); // Swipe para a direita (anterior)
