@@ -20,24 +20,64 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// ---------- Navbar Active Link on Scroll ----------
+document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('section[id]');
+    // Seleciona os links do menu desktop e mobile
+    const navLinks = document.querySelectorAll('nav a[href^="#"]');
 
-// Scroll animations
-const fadeElements = document.querySelectorAll('.fade-in');
+    if (sections.length === 0 || navLinks.length === 0) return;
 
-const fadeInOnScroll = () => {
-    fadeElements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
+    const observerOptions = {
+        root: null, // usa a viewport como raiz
+        rootMargin: '0px',
+        threshold: 0.6 // A seção é considerada "ativa" quando 60% dela está visível
+    };
 
-        if (elementTop < windowHeight - 100) {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
-        }
-    });
-};
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // Pega o ID da seção que está visível
+            const id = entry.target.getAttribute('id');
+            // Encontra o link da navbar que corresponde a essa seção
+            const correspondingLink = document.querySelector(`nav a[href="#${id}"]`);
 
-window.addEventListener('scroll', fadeInOnScroll);
-window.addEventListener('load', fadeInOnScroll);
+            if (entry.isIntersecting) {
+                // Remove a classe 'active' de todos os links
+                navLinks.forEach(link => link.classList.remove('active'));
+                // Adiciona a classe 'active' ao link correspondente
+                if (correspondingLink) {
+                    correspondingLink.classList.add('active');
+                }
+            }
+        });
+    }, observerOptions);
+
+    // Inicia a observação para cada seção
+    sections.forEach(section => observer.observe(section));
+});
+
+// Scroll animations with Intersection Observer (Selective)
+document.addEventListener('DOMContentLoaded', () => {
+    // Seleciona todos os .fade-in que estão DENTRO de #home, #about, ou #skills
+    const fadeElements = document.querySelectorAll('#home .fade-in, #about .fade-in, #skills .fade-in');
+
+    const observerOptions = {
+        root: null, // Observa em relação à viewport
+        rootMargin: '0px',
+        threshold: 0.1 // Ativa quando 10% do elemento está visível
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // Para de observar o elemento após a animação
+            }
+        });
+    }, observerOptions);
+
+    fadeElements.forEach(el => observer.observe(el));
+});
 
 // Custom cursor
 const cursor = document.querySelector('.custom-cursor');
@@ -600,17 +640,14 @@ ${message}
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${yourNumber}&text=${encodeURIComponent(whatsappMessage.trim())}`;
             window.open(whatsappUrl, '_blank');
 
-            // Opcional: Você pode resetar o formulário e mostrar a mensagem de sucesso
+            // Mostra a mensagem de sucesso
+            successMessage.classList.remove('hidden');
+            // Reseta o formulário
             contactForm.reset();
+            // Reseta o texto do select personalizado
             subjectLabel.textContent = initialSubjectText;
             subjectLabel.classList.add('text-gray-400');
             subjectLabel.classList.remove('text-white');
-            successMessage.classList.remove('hidden');
-
-            // Esconde a mensagem de sucesso após alguns segundos
-            setTimeout(() => {
-                successMessage.classList.add('hidden');
-            }, 10000);
         }
     });
 });

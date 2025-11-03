@@ -594,42 +594,6 @@ textarea {
     }
 }
 
-.floating {
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.fade-in {
-    animation: fadeIn 1s ease forwards;
-}
-
-.delay-1 {
-    animation-delay: 0.2s;
-}
-
-.delay-2 {
-    animation-delay: 0.4s;
-}
-
-.delay-3 {
-    animation-delay: 0.6s;
-}
-
-.delay-4 {
-    animation-delay: 0.8s;
-}
-
 .typewriter {
     overflow: hidden;
     border-right: 3px solid var(--primary);
@@ -814,6 +778,34 @@ textarea {
     transform: scale(1.2);
 }
 
+/* --- Animação Fade-in --- */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delay-1 {
+    transition-delay: 0.2s;
+}
+
+.delay-2 {
+    transition-delay: 0.4s;
+}
+
+.delay-3 {
+    transition-delay: 0.6s;
+}
+
+.delay-4 {
+    transition-delay: 0.8s;
+}
+
 /* --- Estilos para o Select Personalizado --- */
 #custom-select-trigger {
     cursor: none; /* Mantém o cursor personalizado */
@@ -836,4 +828,15 @@ textarea {
 /* --- Estilos para Validação do Formulário --- */
 .input-error {
     border-color: #f87171 !important; /* Tailwind's red-400 */
+}
+
+/* --- Estilo para o Link Ativo da Navbar --- */
+.nav-link.active {
+    color: var(--primary);
+    font-weight: 600; /* Deixa o texto um pouco mais forte */
+}
+
+/* Estilo para o link ativo no menu mobile */
+#mobile-menu a.active {
+    background-color: var(--primary);
 }
