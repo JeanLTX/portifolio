@@ -426,6 +426,12 @@ window.addEventListener("DOMContentLoaded", () => {
     let touchStartX = 0;
     let touchMoveX = 0;
     let isDragging = false;
+    let dragThreshold = 10; // Mínimo de pixels para considerar um "arrastar"
+
+    // Impede que o clique nos cards seja acionado durante o swipe
+    carousel.addEventListener('click', (e) => {
+        if (isDragging) e.preventDefault();
+    }, true); // Usa 'capture' para rodar antes de outros eventos de clique
 
     const handleTouchStart = (e) => {
         touchStartX = e.touches[0].clientX;
@@ -445,14 +451,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const handleTouchEnd = () => {
         if (!isDragging) return;
-        isDragging = false;
         // Reabilita a transição para o efeito de "snap"
         carousel.style.transition = 'transform 0.5s ease-in-out';
 
         const deltaX = touchMoveX - touchStartX;
         const swipeThreshold = cardWidth / 4; // O usuário precisa arrastar pelo menos 1/4 do card
 
-        if (deltaX < -swipeThreshold) {
+        // Só considera um swipe se o movimento for maior que o threshold mínimo
+        if (Math.abs(deltaX) > dragThreshold) {
+            isDragging = true; // Confirma que foi um arrasto
+        }
+        if (deltaX < -swipeThreshold && isDragging) {
             slide(1); // Swipe para a esquerda (próximo)
         } else if (deltaX > swipeThreshold) {
             slide(-1); // Swipe para a direita (anterior)
@@ -460,6 +469,9 @@ window.addEventListener("DOMContentLoaded", () => {
             slide(0); // Swipe curto, volta para a posição atual
         }
     };
+
+    // Reset do estado de arrasto no final
+    carousel.addEventListener('touchend', () => { isDragging = false; });
 
     carousel.addEventListener('touchstart', handleTouchStart);
     carousel.addEventListener('touchmove', handleTouchMove);

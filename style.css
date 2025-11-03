@@ -847,7 +847,9 @@ body {
 
 /* Esconde o cursor personalizado em dispositivos de toque */
 @media (pointer: coarse) {
-    /* Em dispositivos de toque, esconde os botões de navegação do carrossel */
-    .projects-nav-btn { display: none; }
-    .custom-cursor { display: none; } /* Garante que o cursor não apareça */
+    /* Em dispositivos de toque, esconde os botões de navegação do carrossel e o cursor */
+    .projects-nav-btn,
+    .custom-cursor {
+        display: none !important;
+    }
 }
