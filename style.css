@@ -13,17 +13,6 @@ body {
     background-color: var(--dark);
     color: var(--light);
     overflow-x: hidden;
-    cursor: none;
-}
-
-a,
-button {
-    cursor: none;
-}
-
-input,
-textarea {
-    cursor: none;
 }
 
 .about-bg-image {
@@ -665,7 +654,6 @@ textarea {
     height: 48px;
     border-radius: 9999px;
     border: none;
-    display: inline-flex;
     align-items: center;
     justify-content: center;
     background: var(--primary);
@@ -674,7 +662,8 @@ textarea {
     cursor: none;
     z-index: 40;
     transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
-    opacity: 0.98;
+    opacity: 0.98;    
+    display: none; /* Escondido por padrão, aparece no desktop */
 }
 
 /* Left / Right positions */
@@ -769,8 +758,7 @@ textarea {
     height: 12px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.3);
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    cursor: none; /* Mantém o cursor personalizado */
+    transition: background-color 0.3s ease, transform 0.3s ease;    
 }
 
 #projects-dots .dot.active {
@@ -808,7 +796,6 @@ textarea {
 
 /* --- Estilos para o Select Personalizado --- */
 #custom-select-trigger {
-    cursor: none; /* Mantém o cursor personalizado */
     user-select: none; /* Impede a seleção de texto */
 }
 
@@ -839,4 +826,30 @@ textarea {
 /* Estilo para o link ativo no menu mobile */
 #mobile-menu a.active {
     background-color: var(--primary);
+}
+
+/* --- Lógica do Cursor Personalizado (Apenas para Desktop) --- */
+@media (pointer: fine) {
+    body, a, button, input, textarea, .projects-nav-btn, #projects-dots .dot, #custom-select-trigger {
+        cursor: none;
+    }
+
+    .custom-cursor {
+        display: block;
+    }
+
+    .projects-nav-btn {
+        display: inline-flex;
+    }
+}
+
+/* Esconde o cursor personalizado em dispositivos de toque */
+@media (pointer: coarse) {
+    .custom-cursor {
+        display: none;
+    }
+
+    .projects-nav-btn {
+        display: none; /* Também garante que os botões do carrossel fiquem escondidos */
+    }
 }

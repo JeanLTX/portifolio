@@ -80,27 +80,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Custom cursor
-const cursor = document.querySelector('.custom-cursor');
+if (window.matchMedia('(pointer: fine)').matches) {
+    const cursor = document.querySelector('.custom-cursor');
 
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
-
-// Make cursor bigger when hovering over clickable elements
-const clickableElements = document.querySelectorAll('a, button, .card-hover, .project-card, .skill-card');
-
-clickableElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        cursor.classList.add('scale-150');
-        cursor.classList.add('bg-opacity-30');
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
     });
 
-    el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('scale-150');
-        cursor.classList.remove('bg-opacity-30');
+    // Make cursor bigger when hovering over clickable elements
+    const clickableElements = document.querySelectorAll('a, button, .card-hover, .project-card, .skill-card, .dot, .custom-select-wrapper');
+
+    clickableElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('scale-150');
+            cursor.classList.add('bg-opacity-30');
+        });
+
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('scale-150');
+            cursor.classList.remove('bg-opacity-30');
+        });
     });
-});
+}
 
 // Typewriter effect for hero section
 const phrases = ["Criando experiências digitais incríveis.", "Desenvolvendo interfaces modernas.", "Transformando ideias em realidade.", "Projetando experiências visuais únicas."];
