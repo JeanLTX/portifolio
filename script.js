@@ -1,10 +1,15 @@
-// Mobile menu toggle
-const mobileMenuButton = document.getElementById('mobile-menu-button');
-const mobileMenu = document.getElementById('mobile-menu');
+/**
+ * Função para alternar a visibilidade do menu mobile.
+ */
+function setupMobileMenu() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (!mobileMenuButton || !mobileMenu) return;
 
-mobileMenuButton.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-});
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+}
 
 // Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -14,15 +19,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetElement = document.querySelector(targetId);
 
         if (targetElement) {
+            // Fecha o menu mobile ao clicar em um link
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
             window.scrollTo({ top: targetElement.offsetTop - 40, behavior: 'smooth' });
-            mobileMenu.classList.add('hidden');
         }
     });
 });
 
 // ---------- Navbar Active Link on Scroll ----------
-document.addEventListener('DOMContentLoaded', () => {
-    const sections = document.querySelectorAll('section[id]');
+function setupNavObserver() {
+    const sections = document.querySelectorAll('section[id]'); // Seleciona seções com ID
     // Seleciona os links do menu desktop e mobile
     const navLinks = document.querySelectorAll('nav a[href^="#"]');
 
@@ -30,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const observerOptions = {
         root: null, // usa a viewport como raiz
-        rootMargin: '0px',
+        rootMargin: '-50% 0px -50% 0px', // Ativa o link quando a seção está no meio da tela
         threshold: 0.6 // A seção é considerada "ativa" quando 60% dela está visível
     };
 
@@ -54,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicia a observação para cada seção
     sections.forEach(section => observer.observe(section));
-});
+}
 
 // Scroll animations with Intersection Observer (Selective)
-document.addEventListener('DOMContentLoaded', () => {
+function setupFadeInAnimations() {
     // Seleciona todos os .fade-in que estão DENTRO de #home, #about, ou #skills
     const fadeElements = document.querySelectorAll('#home .fade-in, #about .fade-in, #skills .fade-in');
 
@@ -77,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     fadeElements.forEach(el => observer.observe(el));
-});
+}
 
 // Custom cursor
 if (window.matchMedia('(pointer: fine)').matches) {
@@ -298,7 +307,7 @@ $(document).ready(function () {
 });
 
 // ---------- Projects Carousel (Infinite Loop Logic) ----------
-window.addEventListener("DOMContentLoaded", () => {
+function setupProjectsCarousel() {
     const carousel = document.querySelector('.projects-carousel');
     const prevButton = document.getElementById('projects-prev');
     const nextButton = document.getElementById('projects-next');
@@ -534,10 +543,10 @@ window.addEventListener("DOMContentLoaded", () => {
         carousel.style.transition = 'transform 0.5s ease-in-out';
     }, 50);
     updateDots(); // Ativa o primeiro ponto no carregamento
-});
+}
 
 // ---------- Custom Select (Contact Form) ----------
-document.addEventListener('DOMContentLoaded', () => {
+function setupCustomSelect() {
     const selectWrapper = document.querySelector('.custom-select-wrapper');
     if (!selectWrapper) return;
 
@@ -568,10 +577,10 @@ document.addEventListener('DOMContentLoaded', () => {
             trigger.classList.remove('open');
         }
     });
-});
+}
 
 // ---------- Form Validation ----------
-document.addEventListener('DOMContentLoaded', () => {
+function setupFormValidation() {
     const contactForm = document.getElementById('contact-form');
     if (!contactForm) return;
 
@@ -676,4 +685,20 @@ ${message}
             subjectLabel.classList.remove('text-white');
         }
     });
+}
+
+/**
+ * Função principal que inicializa todos os scripts após o carregamento do DOM.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    setupMobileMenu();
+    setupNavObserver();
+    setupFadeInAnimations();
+    setupSkillsAnimation();
+    setupParallaxEffect();
+    setupNavbarScrollEffect();
+    setupShootingStars();
+    setupProjectsCarousel();
+    setupCustomSelect();
+    setupFormValidation();
 });
