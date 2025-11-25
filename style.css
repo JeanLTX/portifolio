@@ -18,7 +18,7 @@ body {
     /* Usamos 'linear-gradient' para criar a camada escura (o seu #0d0e20 com 85% de opacidade) */
     background-image:
         linear-gradient(rgba(13, 14, 32, 0.274), rgba(13, 14, 32, 0.85)),
-        url('./assets/aboutbg3.jpeg');
+        url('./assets/aboutbg3.webp');
     /* <-- ATENÇÃO: Verifique o caminho real da sua imagem */
 
     /* 2. Propriedades de Ajuste */
