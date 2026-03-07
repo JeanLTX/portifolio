@@ -1,0 +1,9 @@
+@import "./style.css";
+@tailwind components;
+@tailwind utilities;
+
+/* 
+  Nota: Omitimos o "@tailwind base;" propositalmente.
+  Isso evita que o Tailwind adicione o "Preflight" (reset de estilos),
+  que é o que geralmente quebra o layout de projetos que já têm CSS pronto.
+*/

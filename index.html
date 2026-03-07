@@ -19,14 +19,28 @@
 
   <link rel="icon" type="image/jpeg" href="./assets/memojipng.png" />
   <title>Jean Lucca</title>
-  <!-- Otimização de Fontes -->
+
+  <!-- DNS Prefetch e Preconnect para aceleração de rede -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-  <!-- Fim da Otimização de Fontes -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
+
+  <!-- Otimização de Fontes -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"
+    media="print" onload="this.media='all'" />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  </noscript>
+
+  <!-- Font Awesome - Carregamento Assíncrono -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print"
+    onload="this.media='all'" />
+
+  <!-- CSS Unificado (Tailwind + Design Customizado) -->
+  <link rel="stylesheet" href="tailwind-output.css" />
 </head>
 
 <body class="min-h-screen">
@@ -195,15 +209,11 @@
               class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-200">
             </div>
             <div class="relative glass-card rounded-lg p-1 w-64 h-64">
-              <!-- Imagem com lazy loading -->
+              <!-- Imagem otimizada local -->
               <picture>
-                <source srcset="
-                      https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80&fm=webp
-                    " type="image/webp" />
-                <img
-                  src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80"
-                  alt="Imagem de um notebook com código" class="w-full h-full object-cover rounded-lg" loading="lazy"
-                  width="256" height="256" />
+                <source srcset="./assets/who.webp" type="image/webp" />
+                <img src="./assets/who.webp" alt="Avatar de Jean Lucca" class="w-full h-full object-cover rounded-lg"
+                  loading="lazy" width="256" height="256" />
               </picture>
             </div>
           </div>
@@ -934,9 +944,9 @@
     </div>
   </footer>
 
-  <script type="text/javascript" src="./jquery.min.js"></script>
-  <script type="text/javascript" src="./FlyBackground.js"></script>
-  <script src="script.js"></script>
+  <script type="text/javascript" src="./jquery.min.js" defer></script>
+  <script type="text/javascript" src="./FlyBackground.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 
 </html>
