@@ -14,6 +14,6 @@ module.exports = {
     },
     plugins: [],
     corePlugins: {
-        preflight: false, // Reativando para restaurar o comportamento do CDN
+        preflight: false, // ISSO impede que o Tailwind resete seus estilos existentes
     }
 }

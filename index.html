@@ -35,12 +35,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   </noscript>
 
-  <!-- Font Awesome - Carregamento Assíncrono -->
+  <!-- Tailwind CSS CDN (Nota: Para produção, o ideal é usar o CLI/Vite para gerar um arquivo estático) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome - Carregamento Assíncrono para não bloquear a renderização -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print"
     onload="this.media='all'" />
 
-  <!-- CSS Unificado (Tailwind + Design Customizado) -->
-  <link rel="stylesheet" href="tailwind-output.css" />
+  <!-- CSS Local -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="min-h-screen">
