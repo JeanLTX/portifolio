@@ -1,9 +1,20 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 :root {
     --primary: #6c5ce7;
     --primary-dark: #5d4aec;
     --dark: #1e1e1e;
     --light: #f8f9fa;
     --deep-dark: #0C0B19;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 body {
