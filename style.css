@@ -877,3 +877,27 @@ body {
         display: flex;
     }
 }
+
+/* Ações dos cards de projetos: alinhamento consistente no rodapé */
+.project-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card-content {
+    flex: 1;
+}
+
+.project-card-actions {
+    width: 100%;
+}
+
+.project-visit-btn {
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.project-github-link {
+    top: 50%;
+    transform: translateY(-50%);
+}
